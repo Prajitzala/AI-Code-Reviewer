@@ -1,6 +1,6 @@
 {
   "name": "@prajitzala/ai-code-reviewer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Add AI-powered PR code reviews to any GitHub repo in one command",
   "homepage": "https://github.com/Prajitzala/AI-Code-Reviewer#readme",
   "repository": {
