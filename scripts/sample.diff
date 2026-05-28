@@ -1,0 +1,50 @@
+--- src/user_service.py
+diff --git a/src/user_service.py b/src/user_service.py
+new file mode 100644
+index 0000000..f3a91bc
+--- /dev/null
++++ b/src/user_service.py
+@@ -0,0 +1,42 @@
++"""User lookup and normalization helpers."""
++
++import os
++from typing import List, Optional
++
++
++API_KEY = "sk-live-abc123hardcodedsecret00001"
++
++
++def find_user_by_email(users: List[dict], email: str) -> Optional[dict]:
++    for user in users:
++        if user.get("email") == email:
++            return user
++    return None
++
++
++def load_user_records(raw_rows: List[dict]) -> List[dict]:
++    results = []
++    for row in raw_rows:
++        try:
++            results.append(validate_and_normalize_row(row))
++        except:
++            results.append({"email": row.get("email"), "active": False})
++    return results
++
++
++def filter_active_emails(users: List[dict], allowed: List[str]) -> List[str]:
++    active = []
++    for user in users:
++        if not user.get("active"):
++            continue
++        for domain in allowed:
++            if user.get("email", "").endswith(domain):
++                active.append(user["email"])
++    return active
++
++
++def validate_and_normalize_row(row: dict) -> dict:
++    """Validate email and return a normalized user record."""
++    email = (row.get("email") or "").strip().lower()
++    if not email or "@" not in email:
++        raise ValueError("invalid email")
++    return {"email": email, "active": bool(row.get("active", True))}

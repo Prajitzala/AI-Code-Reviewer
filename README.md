@@ -1,84 +1,172 @@
-# AI Code Reviewer
+# 🤖 @prajitzala/ai-code-reviewer
 
-[![npm version](https://img.shields.io/npm/v/@prajitzala/ai-code-reviewer)](https://www.npmjs.com/package/@prajitzala/ai-code-reviewer)
-[![npm downloads](https://img.shields.io/npm/dm/@prajitzala/ai-code-reviewer)](https://www.npmjs.com/package/@prajitzala/ai-code-reviewer)
+> Add AI-powered PR code reviews to any GitHub repo in one command.
+
+[![npm version](https://img.shields.io/npm/v/@prajitzala/ai-code-reviewer?style=for-the-badge&logo=npm&color=CB3837)](https://www.npmjs.com/package/@prajitzala/ai-code-reviewer)
+[![npm downloads](https://img.shields.io/npm/dm/@prajitzala/ai-code-reviewer?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@prajitzala/ai-code-reviewer)
 [![AI Code Review](https://github.com/Prajitzala/Prajitzala/actions/workflows/ai-review.yml/badge.svg)](https://github.com/Prajitzala/Prajitzala/actions/workflows/ai-review.yml)
+![OpenAI](https://img.shields.io/badge/OpenAI_GPT--4o-412991?style=for-the-badge&logo=openai&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-AI-powered pull request reviews on GitHub Actions, powered by OpenAI GPT-4o.
+---
 
-## Demo
-
-See a live review on [Prajitzala/Prajitzala#1](https://github.com/Prajitzala/Prajitzala/pull/1) — the Action posts a summary comment (verdict, summary, positives) on every pull request.
-
-## Quick start
+## ⚡ Install in 60 Seconds
 
 ```bash
 npx @prajitzala/ai-code-reviewer init
 ```
 
-This adds a GitHub Actions workflow and review script to your repository.
+That's it. Run this from the root of any GitHub repo — it sets up everything automatically.
 
-## Setup
+**Package:** [npm/@prajitzala/ai-code-reviewer](https://www.npmjs.com/package/@prajitzala/ai-code-reviewer) · **Source:** [github.com/Prajitzala/AI-Code-Reviewer](https://github.com/Prajitzala/AI-Code-Reviewer)
 
-### 1. Install in your repo
+---
 
-From your project root (must be a git repository):
+## 🎥 Demo
 
-```bash
-npx @prajitzala/ai-code-reviewer init
+Live Action output on a real PR: [Prajitzala/Prajitzala#1](https://github.com/Prajitzala/Prajitzala/pull/1) (summary comment + inline comments on the diff).
+
+---
+
+## 🎬 What Happens
+
+```
+$ npx @prajitzala/ai-code-reviewer init
+
+  ╔══════════════════════════════════╗
+  ║     🤖  AI Code Reviewer         ║
+  ║     Powered by GPT-4o            ║
+  ╚══════════════════════════════════╝
+
+? Which OpenAI model should the reviewer use?
+  ❯ GPT-4o  (best quality, recommended)
+    GPT-4o-mini  (faster, cheaper)
+
+? Max diff size to review per PR?
+  ❯ 12,000 chars  (recommended)
+
+  ✔  .github/workflows/ai-review.yml
+  ✔  scripts/review.py
+  ✔  scripts/requirements.txt
+
+  🚀 One step left:
+  Add OPENAI_API_KEY to your repo secrets.
+  Repo → Settings → Secrets → New secret
+  Done! Open a PR and watch the magic 🎉
 ```
 
-Choose your model and max diff size when prompted.
+Then add your OpenAI API key as a GitHub secret and open any PR.
 
-### 2. Add the OpenAI API key secret
+---
 
-1. Open your repo on GitHub → **Settings** → **Secrets and variables** → **Actions**
-2. Click **New repository secret**
-3. Name: `OPENAI_API_KEY`
-4. Value: your key from [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+## 🔍 What the Review Looks Like
 
-`GITHUB_TOKEN` is provided automatically by GitHub Actions.
+Every PR automatically gets a comment like this:
 
-### 3. Open a pull request
+```
+✅ AI Code Review — GPT-4o
 
-The workflow runs on `pull_request` events (`opened`, `synchronize`, `reopened`) and posts a review summary comment (and inline comments when possible).
+Overall clean implementation. One security issue and two
+suggestions were found.
 
-## Commands
+Verdict: REQUEST_CHANGES
 
-| Command | Description |
-| --- | --- |
-| `init` | Add workflow + scripts to the current repo |
-| `remove` | Remove generated files |
-| `help` | Show usage |
+---
+🔍 Issues Found
 
-## Configuration
+🔴 🔐 Hardcoded Secret Key
+- Severity: critical   Category: security
+- File: middleware/auth.js  line: 14
+- JWT secret is hardcoded. Use process.env.JWT_SECRET instead.
 
-During `init` you can choose:
+🟡 🐛 Missing Error Handling
+- Severity: warning   Category: bug
+- File: routes/user.js  line: 42
+- Async function has no try/catch — will crash in production.
 
-- **Model:** `gpt-4o` (recommended) or `gpt-4o-mini`
-- **Max diff size:** `8000`, `12000` (recommended), or `20000` characters sent to the model
-
-To change settings later, run `init` again and confirm overwrite, or edit `scripts/review.py` directly.
-
-## Local testing
-
-```bash
-export OPENAI_API_KEY=sk-...
-export GITHUB_TOKEN=ghp_...
-export REPO=owner/repo
-export PR_NUMBER=1
-export BASE_SHA=...
-export HEAD_SHA=...
-
-python scripts/test_local.py
+---
+👍 What's Good
+- Clean separation of concerns
+- Consistent use of async/await
 ```
 
-## Uninstall
+Plus inline comments posted directly on the diff lines.
+
+---
+
+## 📋 What Gets Reviewed
+
+| Category | What It Checks |
+|---|---|
+| 🐛 Bug | Logic errors, null refs, unhandled promises |
+| 🔐 Security | Hardcoded secrets, injection risks, auth issues |
+| ⚡ Performance | N+1 queries, unnecessary re-renders, blocking ops |
+| ✨ Quality | Naming, duplication, complexity, missing tests |
+
+Lock files and binary assets are automatically skipped.
+
+---
+
+## 🛠️ Commands
 
 ```bash
-npx @prajitzala/ai-code-reviewer remove
+npx @prajitzala/ai-code-reviewer init     # Set up in current repo
+npx @prajitzala/ai-code-reviewer remove   # Remove from current repo
+npx @prajitzala/ai-code-reviewer help     # Show help
 ```
 
-## License
+---
 
-ISC
+## 🗂️ Files Created in Your Repo
+
+```
+your-repo/
+├── .github/
+│   └── workflows/
+│       └── ai-review.yml      # Triggers on every PR
+└── scripts/
+    ├── review.py              # GPT-4o review logic
+    └── requirements.txt       # Python deps
+```
+
+---
+
+## ⚙️ How It Works
+
+```
+PR opened / updated
+       │
+       ▼
+GitHub Action triggers
+       │
+       ▼
+Python fetches PR diff (GitHub API)
+       │
+       ▼
+Diff sent to GPT-4o (JSON mode)
+       │
+       ├──▶ Summary comment posted on PR
+       └──▶ Inline comments on diff lines
+```
+
+---
+
+## 🔮 Roadmap
+
+- [ ] Support Anthropic Claude as alternative LLM
+- [ ] `.aireview` config file per repo
+- [ ] Severity threshold flag — only post if critical issues found
+- [ ] Auto-approve clean PRs
+- [ ] Re-review on new commits (deduplication)
+
+---
+
+## 🧑‍💻 Author
+
+**Prajit Zala** — [linkedin.com/in/prajitzala](https://linkedin.com/in/prajitzala) · [github.com/Prajitzala](https://github.com/Prajitzala)
+
+---
+
+## 📄 License
+
+MIT — use it, fork it, improve it.

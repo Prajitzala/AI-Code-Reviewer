@@ -1,11 +1,11 @@
 {
   "name": "@prajitzala/ai-code-reviewer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Add AI-powered PR code reviews to any GitHub repo in one command",
-  "homepage": "https://github.com/Prajitzala/ai-code-reviewer#readme",
+  "homepage": "https://github.com/Prajitzala/AI-Code-Reviewer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Prajitzala/ai-code-reviewer.git"
+    "url": "git+https://github.com/Prajitzala/AI-Code-Reviewer.git"
   },
   "type": "module",
   "bin": {
@@ -30,7 +30,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "python3 scripts/test_inline_resolve.py"
   },
   "author": "",
   "license": "ISC",
